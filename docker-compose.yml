@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:stable-alpine
+    depends_on:
+      - node-app
+  node-app:
+    build:
+      context: .
+      args:
+        - NODE_ENV:development
+    
+    environment:
+      - PORT=4000
+    depends_on:
+      - mongo
+      - redis
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sibi
+      - MONGO_INITDB_ROOT_PASSWORD=Hindustan1
+    volumes:
+      - mongo-db:/data/db
+  redis:
+    image: redis
+
+volumes:
+  mongo-db:
